@@ -2,13 +2,13 @@ package models;
 
 public class Produto {
     private Integer id;
-    private String nome;
+    private String descricao;
     private Double valor;
 
     public Produto () {}
-    public Produto (Integer id, String nome, Double valor) {
+    public Produto (Integer id, String descricao, Double valor) {
         this.id = id;
-        this.nome = nome;
+        this.descricao = descricao;
         this.valor = valor;
     }
 
@@ -16,12 +16,24 @@ public class Produto {
         return this.id;
     }
 
-    public String getNome() {
-        return this.nome;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return this.descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Double getValor() {
         return this.valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
     }
 
 }
