@@ -25,16 +25,15 @@ public class ProdutoController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Optional<Produto>> buscarPorId(@PathVariable Long id) {
-        try {
-            Optional<Produto> produto = listaProdutos
-                .stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
+        Optional<Produto> produto = listaProdutos
+            .stream()
+            .filter(p -> p.getId().equals(id))
+            .findFirst();
 
+        if(produto.isPresent()) {
             return new ResponseEntity<>(produto, HttpStatus.OK);
-        } catch (HttpClientErrorException.NotFound nf) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
