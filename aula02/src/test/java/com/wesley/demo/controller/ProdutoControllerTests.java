@@ -63,14 +63,14 @@ public class ProdutoControllerTests {
     @Test
     void atualizarProduto() throws Exception {
         this.mockMvc.perform(put("/produtos/0"))
-                .andDo(print())
-                .andExpect(status().isNotFound());
+            .andDo(print())
+            .andExpect(status().isNotFound());
     }
 
     @Test
     void removerProduto() throws Exception {
         this.mockMvc.perform(delete("/produtos/0"))
-                .andDo(print())
-                .andExpect(status().isNotFound());
+            .andDo(print())
+            .andExpect(status().isNotFound());
     }
 }

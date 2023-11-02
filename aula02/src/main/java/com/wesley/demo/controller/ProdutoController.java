@@ -1,12 +1,11 @@
 package com.wesley.demo.controller;
 
 import com.wesley.demo.models.Produto;
-import org.hibernate.annotations.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
+import javax.management.InvalidAttributeValueException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,28 +23,42 @@ public class ProdutoController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Produto>> buscarPorId(@PathVariable Long id) {
-        Optional<Produto> produto = listaProdutos
-            .stream()
-            .filter(p -> p.getId().equals(id))
-            .findFirst();
+    public ResponseEntity<Produto> buscarPorId(@PathVariable int id) {
+        System.out.println(listaProdutos.isEmpty());
+        if(listaProdutos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-        if(produto.isPresent()) {
+        Produto produto = listaProdutos
+                .stream()
+                .filter(p -> p.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if(produto != null) {
             return new ResponseEntity<>(produto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Produto> adicionar(@RequestBody Produto produto) {
-        produto.setId(this.index);
-        this.index++;
-        this.listaProdutos.add(produto);
-        return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
+    public ResponseEntity<Object> adicionar(@RequestBody Produto produto) {
+        try {
+            Produto p = new Produto();
+            p.setId(this.index);
+            p.setDescricao(produto.getDescricao());
+            p.setValor(produto.getValor());
+
+            this.index++;
+            this.listaProdutos.add(produto);
+            return new ResponseEntity<>(produto, HttpStatus.CREATED);
+        } catch (InvalidAttributeValueException e) {
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(value ="/{id}")
-    public ResponseEntity<Optional<Produto>> atualizar(@RequestBody Produto produtoBody, @PathVariable int id) {
+    public ResponseEntity<Optional<Produto>> atualizar(@RequestBody Produto produtoBody, @PathVariable int id) throws InvalidAttributeValueException {
         Produto produto = listaProdutos
             .stream()
             .filter(p -> p.getId() == id)
