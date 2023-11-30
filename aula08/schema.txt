@@ -1,0 +1,30 @@
+ItemVendasPK
+manyToOne()
+joincolumn("venda_id")
+- venda
+manyToOne()
+joincolumn("codigo")
+- produto
+
+----------------
+
+ItensVenda
+@Embedable
+-ItemVendasPk
+-Quantidade
+-Valor
+
+----------------
+
+Venda 
+-idvenda
+- List <ItensVenda>
+
+----------------
+
+Produto 
+-id
+-nome
+
+
+

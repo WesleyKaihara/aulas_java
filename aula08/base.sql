@@ -1,0 +1,2 @@
+CREATE DATABASE aula_08;
+USE aula_08;
